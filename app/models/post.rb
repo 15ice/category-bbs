@@ -10,4 +10,12 @@ class Post < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z|\A\z/i
   validates :mail, 
       format: { with: VALID_EMAIL_REGEX, message: "メールアドレスを正しく入力してください" }
+
+  def self.search(category)
+    if category
+      Post.where('category_id == ?', category)
+    else
+      Post.all
+    end
+  end
 end

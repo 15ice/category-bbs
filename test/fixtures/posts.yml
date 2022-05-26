@@ -3,7 +3,7 @@
 one:
   user: one
   user_name: MyString
-  mail: MyString
+  mail: test@email.com
   title: MyString
   detail: MyString
   category: one
@@ -12,7 +12,7 @@ one:
 two:
   user: two
   user_name: MyString
-  mail: MyString
+  mail: test@email.com
   title: MyString
   detail: MyString
   category: two
