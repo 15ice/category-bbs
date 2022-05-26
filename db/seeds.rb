@@ -5,3 +5,18 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+INIT_CATEGORIES = [
+  {
+    name: '感想',
+  },
+  {
+    name: '問い合わせ',
+  },
+  {
+    name: 'クレーム',
+  }
+]
+
+INIT_CATEGORIES.each do |category|
+  Category.create(category)
+end
