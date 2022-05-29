@@ -31,10 +31,21 @@ class Api::V1::PostsController < ApplicationController
     end
   end
 
-  def update
-    # 表示、非表示のみ更新可能
+  def update_hidden
+    # 非表示に更新
     post = Post.find(params[:id])
-    post.is_hidden = params.require(:post).permit(:is_hidden)
+    post.is_hidden = true
+    if post.save
+      render json: post, status: :ok
+    else
+      render json: post.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update_display
+    # 表示に更新
+    post = Post.find(params[:id])
+    post.is_hidden = false
     if post.save
       render json: post, status: :ok
     else

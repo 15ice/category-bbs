@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/posts/search/:category', to: 'posts#search'
-      resources :posts, only: %i[index show create update]
+      put '/posts/update_hidden/:id', to: 'posts#update_hidden'
+      put '/posts/update_display/:id', to: 'posts#update_display'
+      resources :posts, only: %i[index show create]
       resources :categories, only: %i[index show create update destroy]
     end
   end
