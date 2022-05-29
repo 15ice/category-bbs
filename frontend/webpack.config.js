@@ -32,4 +32,7 @@ module.exports = {
       AppConfig: path.join(__dirname, `/src/config/_${environment}.js`)
     }
   },
+  devServer: {
+    historyApiFallback: true
+  },
 };
