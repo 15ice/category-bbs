@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server --mode development --https",
     "prebuild": "rm -rf dist",
     "build": "webpack --progress --mode production"
   },
