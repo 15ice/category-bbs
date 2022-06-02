@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  https-portal:
+  https-portal-backend:
     image: steveltn/https-portal:1
     ports:
       - '3443:443'
@@ -11,20 +11,30 @@ services:
     environment:
       STAGE: local
       DOMAINS: 'localhost -> http://backend:3000'
+  https-portal-frontend:
+    image: steveltn/https-portal:1
+    ports:
+      - '8443:443'
+    links:
+      - frontend
+    restart: always
+    environment:
+      STAGE: local
+      DOMAINS: 'localhost -> http://frontend:80'
   backend:
     build:
       context: ./backend/
       dockerfile: Dockerfile
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - ./backend:/myapp
     ports:
       - 3000:3000
+    environment:
+      RAILS_ENV: production
   frontend:
     build:
       context: ./frontend/
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
-    volumes:
-      - ./frontend:/myapp
+      - 80:80
