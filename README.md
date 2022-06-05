@@ -5,6 +5,7 @@
 ### APIサーバーの起動
 
 ```
+cd backend
 bundle exec thin start --ssl -p 3000 -D -V
 ```
 

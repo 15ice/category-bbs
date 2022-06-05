@@ -4,10 +4,21 @@ module SessionsHelper
     cookies.permanent[:uuid] = user.uuid
   end
 
+  def admin_login(admin_session)
+    session[:created_at] = admin_session.created_at
+    session[:access_key] = admin_session.access_key
+  end
+
   def current_user
     if (user_id = cookies.signed[:user_id])
       user = User.find_by(id: user_id)
       @current_user ||= user if user && user.authenticated?(cookies[:uuid])
     end
+  end
+
+  def is_admin?
+    session = AdminSession.find_by(user: @current_user, created_at: session[:created_at])
+    return session.authenticated?(session[:access_key]) &&
+        Settings.MNG_SESSIONS_MINUTES_PERIOD.minutes.ago <= session.created_at
   end
 end
