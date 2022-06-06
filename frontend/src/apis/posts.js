@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { postsIndex } from './urls'
+import { postsIndexUrl } from './urls'
 
 export const fetchPosts = () => {
-  return axios.get(postsIndex, {
-    withCredentials: true
-  })
-    .then(res => {
-      return res.data
-    })
-    .catch((e) => console.error(e))
+  return axios.get(
+    postsIndexUrl,
+    { withCredentials: true }
+  ).then(res => {
+    return res.data
+  }).catch((e) => { throw e; });
 }

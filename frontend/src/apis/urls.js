@@ -2,25 +2,29 @@ import config from 'AppConfig';
 
 const DEFAULT_API = `${config.API_URL}/api/v1`;
 
+// sessions
+export const loginUrl = `${DEFAULT_API}/login`;
+export const logoutUrl = `${DEFAULT_API}/logout`;
+
 // posts
-export const postsIndex = `${DEFAULT_API}/posts`;
-export const postsCreate = `${DEFAULT_API}/posts`;
-export const postsShow = (postId) =>
+export const postsIndexUrl = `${DEFAULT_API}/posts`;
+export const postsCreateUrl = `${DEFAULT_API}/posts`;
+export const postsShowUrl = (postId) =>
   `${DEFAULT_API}/posts/${postId}`;
-export const postsUpdateDisplay = (postId) =>
+export const postsUpdateDisplayUrl = (postId) =>
   `${DEFAULT_API}/posts/update_display/${postId}`;
-export const postsUpdateHidden = (postId) =>
+export const postsUpdateHiddenUrl = (postId) =>
   `${DEFAULT_API}/posts/update_hidden/${postId}`;
-export const postsSearch = (categoryId) =>
+export const postsSearchUrl = (categoryId) =>
   `${DEFAULT_API}/posts/search/${categoryId}`;
 
 // categories
-export const categoriesIndex = `${DEFAULT_API}/categories`;
-export const categoriesCreate = `${DEFAULT_API}/categories`;
-export const categoriesShow = (categoryId) =>
+export const categoriesIndexUrl = `${DEFAULT_API}/categories`;
+export const categoriesCreateUrl = `${DEFAULT_API}/categories`;
+export const categoriesShowUrl = (categoryId) =>
   `${DEFAULT_API}/categories/${categoryId}`;
-export const categoriesUpdate = (categoryId) =>
+export const categoriesUpdateUrl = (categoryId) =>
   `${DEFAULT_API}/categories/${categoryId}`;
-export const categoriesDestroy = (categoryId) =>
+export const categoriesDestroyUrl = (categoryId) =>
   `${DEFAULT_API}/categories/${categoryId}`;
 
