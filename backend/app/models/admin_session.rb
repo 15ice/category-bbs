@@ -6,13 +6,13 @@ class AdminSession < ApplicationRecord
   class << self
     def create_sessions!(user)
       access_key = new_access_key
-      session = new(
+      admin_session = new(
         user: user,
         access_key: access_key,
         access_key_digest: digest(access_key)
       )
-      session.save!
-      session
+      admin_session.save!
+      admin_session
     end
 
     def password_authenticated?(password)

@@ -17,8 +17,12 @@ module SessionsHelper
   end
 
   def is_admin?
-    session = AdminSession.find_by(user: @current_user, created_at: session[:created_at])
-    return session.authenticated?(session[:access_key]) &&
-        Settings.MNG_SESSIONS_MINUTES_PERIOD.minutes.ago <= session.created_at
+    if (created_at = session[:created_at]) 
+      admin_session = AdminSession.find_by(user: current_user, created_at: session[:created_at])
+      return !admin_session.nil? && admin_session.authenticated?(session[:access_key]) &&
+          Settings.MNG_SESSIONS_MINUTES_PERIOD.minutes.ago <= admin_session.created_at
+    else
+      return false
+    end
   end
 end

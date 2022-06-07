@@ -17,7 +17,7 @@ class Api::V1::PostsController < ApplicationController
   def create
     data = post_params
     post = Post.new(
-      user: current_user,
+      user: @user,
       user_name: data[:user_name],
       mail: data[:mail],
       title: data[:title],

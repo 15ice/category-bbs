@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useLayoutEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
@@ -22,16 +22,25 @@ const Login = (props) => {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
+  useLayoutEffect(() => {
+    // ログイン済みのユーザはログイン画面をスキップする
+    if (props.loginState === LOGIN_STATE.LOGIN) {
+      navigate("/mng", { replace: true });
+    }
+  });
+
   const handleSubmit = (e) => {
     login({
       password: password
     }).then(() => {
-      navigate("/mng");
       props.handleLogin(LOGIN_STATE.LOGIN);
+      navigate("/mng");
     }).catch((e) => {
+      props.handleLogin(LOGIN_STATE.NOT_LOGIN);
       if (e.response.status === HTTP_STATUS_CODE.UNAUTHORIZED) {
         setErrorMsg("パスワードが違います。");
-        props.handleLogin(LOGIN_STATE.NOT_LOGIN);
+      } else {
+        setErrorMsg("何らかの障害が発生しています。時間を置いて再度お試しください。");
       }
     });
     e.preventDefault();
@@ -56,7 +65,7 @@ const Login = (props) => {
         <LoginButton>login</LoginButton>
       </LoginForm>
     </Fragment>
-  )
+  );
 }
 
 export default Login

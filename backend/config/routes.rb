@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post '/login', to: 'sessions#login'
       delete '/logout', to: 'sessions#logout'
+      get '/logged_in', to: 'sessions#logged_in?'
       
       get '/posts/search/:category', to: 'posts#search'
       put '/posts/update_hidden/:id', to: 'posts#update_hidden'

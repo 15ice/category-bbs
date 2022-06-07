@@ -7,9 +7,11 @@ class ApplicationController < ActionController::API
   private
 
   def set_user
-    unless current_user
-      user = User.create_anonymous!
-      remember(user)
+    @user = current_user
+    unless @user
+      @user = User.create_anonymous!
+      remember(@user)
+    else
     end
   end
 end

@@ -5,6 +5,7 @@ const DEFAULT_API = `${config.API_URL}/api/v1`;
 // sessions
 export const loginUrl = `${DEFAULT_API}/login`;
 export const logoutUrl = `${DEFAULT_API}/logout`;
+export const loggedInUrl = `${DEFAULT_API}/logged_in`;
 
 // posts
 export const postsIndexUrl = `${DEFAULT_API}/posts`;
