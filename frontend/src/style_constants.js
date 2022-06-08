@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 export const COLORS = {
   DARK_PRIMARY_BACK: '#0097A7',
   PRIMARY_BACK: '#00BCD4',
@@ -8,3 +10,7 @@ export const COLORS = {
   DIVIDER: '#BDBDBD',
   ACCENT: '#FFC107'
 }
+
+// styled
+export const DefaultMain = styled.main`
+`

@@ -1,21 +1,24 @@
-import React, { Fragment, useLayoutEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 // constants
 import { LOGIN_STATE } from '../constants';
+import { DefaultMain } from '../style_constants';
 
 const Mng = (props) => {
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (props.loginState !== LOGIN_STATE.LOGIN) {
-      navigate("/");
+      navigate("/", { replace: true });
     }
   });
 
   return (
     <Fragment>
-      <h1>管理画面</h1>
+      <DefaultMain>
+        <h1>管理画面</h1>
+      </DefaultMain>
     </Fragment>
   );
 }
