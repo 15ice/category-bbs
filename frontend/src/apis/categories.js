@@ -1,5 +1,18 @@
 import axios from 'axios';
-import { categoriesIndexUrl, categoriesCreateUrl } from './urls'
+import {
+  categoriesIndexUrl,
+  categoriesCreateUrl,
+  categoriesDestroyUrl
+} from './urls'
+
+export const fetchCategories = () => {
+  return axios.get(
+    categoriesIndexUrl,
+    { withCredentials: true }
+  ).then(res => {
+    return res.data
+  }).catch((e) => { throw e; });
+}
 
 export const addCategories = (params) => {
   return axios.post(
@@ -15,11 +28,9 @@ export const addCategories = (params) => {
   }).catch((e) => { throw e; });
 }
 
-export const fetchCategories = () => {
-  return axios.get(
-    categoriesIndexUrl,
+export const deleteCategories = (params) => {
+  return axios.delete(
+    categoriesDestroyUrl(params.categoryId),
     { withCredentials: true }
-  ).then(res => {
-    return res.data
-  }).catch((e) => { throw e; });
+  ).catch((e) => { throw e; });
 }

@@ -1,10 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Table } from 'antd';
+import { Table, Popconfirm, message } from 'antd';
 
 import InputForm from '../../components/InputForm.jsx';
 
 // api
-import { fetchCategories, addCategories } from '../../apis/categories';
+import {
+  fetchCategories,
+  addCategories,
+  deleteCategories
+} from '../../apis/categories';
 
 const MngCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -19,6 +23,10 @@ const MngCategories = () => {
   }
 
   useEffect(() => {
+    getCategories();
+  }, []);
+
+  const getCategories = () => {
     fetchCategories().then((res) => {
       var categories = res.map(r => categoryFormat(
         r.data.id,
@@ -29,16 +37,28 @@ const MngCategories = () => {
     }).catch((e) => {
       console.error(e);
     });
-  }, []);
+  }
 
   const handleAdd = (name) => {
     addCategories({
       name: name
     }).then((res) => {
-      setCategories([...categories, categoryFormat(res.id, res.name, 0, 0)]);
+      getCategories();
     }).catch((e) => {
       console.error(e);
     });
+    message.info('カテゴリを追加しました。');
+  }
+
+  const handleDelete = (categoryId) => {
+    deleteCategories({
+      categoryId: categoryId
+    }).then((res) => {
+      getCategories();
+    }).catch((e) => {
+      console.error(e);
+    });
+    message.info('カテゴリを削除しました。');
   }
 
   const columns = [
@@ -56,7 +76,16 @@ const MngCategories = () => {
       title: '表示中の投稿数',
       dataIndex: 'active_post_count',
       key: 'active_post_count',
-    }
+    },
+    {
+      title: '',
+      dataIndex: 'operation',
+      render: (_, record) => (
+        <Popconfirm title="削除しますか?" onConfirm={() => handleDelete(record.key)}>
+          <a>Delete</a>
+        </Popconfirm>
+      ),
+    },
   ];
 
   return (

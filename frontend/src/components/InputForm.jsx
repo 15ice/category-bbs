@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input } from 'antd';
 
 const InputForm = (props) => {
   const [form] = Form.useForm();
@@ -7,7 +7,6 @@ const InputForm = (props) => {
 
   const handleAdd = (v) => {
     props.handleAdd(v.value);
-    message.info('The addition was successful.');
     form.resetFields();
   }
 
