@@ -14,3 +14,7 @@ export const COLORS = {
 // styled
 export const DefaultMain = styled.main`
 `
+export const PageTitle = styled.h1`
+  padding-left: 15px;
+  font-size: 1.4rem;
+`

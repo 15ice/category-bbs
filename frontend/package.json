@@ -9,6 +9,7 @@
   },
   "author": "cherry051725@gmail.com",
   "dependencies": {
+    "antd": "4.21.0",
     "axios": "0.27.2",
     "css-loader": "6.7.1",
     "react": "18.1.0",

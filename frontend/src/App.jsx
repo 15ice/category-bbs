@@ -24,7 +24,7 @@ const Nabvar = styled.nav`
 `
 const Logo = styled.div`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.5rem;
   letter-spacing: 3px;
   color: ${COLORS.TEXT};
   padding-left: 20px;
@@ -33,12 +33,12 @@ const Logo = styled.div`
 const NavItems = styled.ul`
   display: flex;
   width: 200px;
-  max-width: 20%;
+  max-width: 40%;
   justify-content: end;
   list-style: none;
 `
 const NavItem = styled.li`
-  font-size: 22px;
+  font-size: 1.3rem;
   opacity: 0.7;
   &:hover {
     opacity: 1;
@@ -47,7 +47,7 @@ const NavItem = styled.li`
 const EditButton = styled.span`
   display: inline-block;
   width: 40px;
-  height: 40px;
+  height: 37px;
   border-radius: 50%;
   background-color: ${COLORS.ACCENT};
   text-align:center;
@@ -119,7 +119,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Posts />} />
             <Route path="/login" element={<Login loginState={loginState} setLoginState={setLoginState} />} />
-            <Route path="/mng" element={<Mng loginState={loginState} />} />
+            <Route path="/mng/*" element={<Mng loginState={loginState} />} />
           </Routes>
         </BrowserRouter>
       </React.StrictMode>
