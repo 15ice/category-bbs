@@ -1,7 +1,14 @@
 class Api::V1::CategoriesController < ApplicationController
   def index
     categories = Category.order(created_at: :asc)
-    render json: categories, status: :ok
+    data = categories.map {
+      | category | {
+        data: category,
+        post_count: category.post_count,
+        active_post_count: category.active_post_count
+      }
+    }
+    render json: data, status: :ok
   end
 
   def show

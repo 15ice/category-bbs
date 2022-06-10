@@ -17,3 +17,12 @@ two:
   detail: MyString
   category: two
   is_hidden: false
+
+three:
+  user: three
+  user_name: MyString
+  mail: test@email.com
+  title: MyString
+  detail: MyString
+  category: one
+  is_hidden: true

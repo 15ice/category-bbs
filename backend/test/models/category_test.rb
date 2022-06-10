@@ -23,4 +23,10 @@ class CategoryTest < ActiveSupport::TestCase
     )
     assert category.valid?
   end
+
+  test "関連する投稿数が取れること" do
+    category = Category.find_by(name: "ONE")
+    assert category.post_count == 2
+    assert category.active_post_count == 1
+  end
 end

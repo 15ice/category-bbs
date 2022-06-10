@@ -24,7 +24,7 @@ const Nabvar = styled.nav`
 `
 const Logo = styled.div`
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   letter-spacing: 3px;
   color: ${COLORS.TEXT};
   padding-left: 20px;
