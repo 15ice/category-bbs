@@ -2,7 +2,6 @@ import axios from 'axios';
 import { loginUrl, logoutUrl, loggedInUrl } from './urls'
 
 export const login = (params) => {
-
   return axios.post(
     loginUrl,
     {

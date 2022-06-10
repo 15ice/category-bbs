@@ -1,27 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Table } from 'antd';
 
+import InputForm from '../../components/InputForm.jsx';
+
 // api
-import { fetchCategories } from '../../apis/categories';
+import { fetchCategories, addCategories } from '../../apis/categories';
 
 const MngCategories = () => {
   const [categories, setCategories] = useState([]);
 
+  const categoryFormat = (id, name, post_count, active_post_count) => {
+    return {
+      'key': id,
+      'name': name,
+      'post_count': post_count,
+      'active_post_count': active_post_count
+    }
+  }
+
   useEffect(() => {
     fetchCategories().then((res) => {
-      var categories = res.map(r => {
-        return {
-          'key': r.data.id,
-          'name': r.data.name,
-          'post_count': r.post_count,
-          'active_post_count': r.active_post_count
-        }
-      });
+      var categories = res.map(r => categoryFormat(
+        r.data.id,
+        r.data.name,
+        r.post_count,
+        r.active_post_count));
       setCategories(categories);
     }).catch((e) => {
       console.error(e);
     });
-  });
+  }, []);
+
+  const handleAdd = (name) => {
+    addCategories({
+      name: name
+    }).then((res) => {
+      setCategories([...categories, categoryFormat(res.id, res.name, 0, 0)]);
+    }).catch((e) => {
+      console.error(e);
+    });
+  }
 
   const columns = [
     {
@@ -42,7 +60,15 @@ const MngCategories = () => {
   ];
 
   return (
-    <Table columns={columns} dataSource={categories} />
+    <Fragment>
+      <InputForm name="add_name" handleAdd={handleAdd} />
+      <Table
+        columns={columns}
+        dataSource={categories}
+        pagination={false}
+        scroll={{ y: '60vh' }}
+      />
+    </Fragment>
   );
 }
 
