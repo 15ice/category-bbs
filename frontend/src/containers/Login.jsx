@@ -58,7 +58,7 @@ const Login = (props) => {
         <LoginButton>login</LoginButton>
       </LoginForm>
     </Fragment>
-  );
+  )
 }
 
 export default Login

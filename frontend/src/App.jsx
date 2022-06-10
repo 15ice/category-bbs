@@ -127,7 +127,7 @@ const App = () => {
         </BrowserRouter>
       </React.StrictMode>
     </Fragment>
-  );
+  )
 };
 
 const container = document.getElementById('root');

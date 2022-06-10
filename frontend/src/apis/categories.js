@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   categoriesIndexUrl,
   categoriesCreateUrl,
+  categoriesUpdateUrl,
   categoriesDestroyUrl
 } from './urls'
 
@@ -26,6 +27,18 @@ export const addCategories = (params) => {
   ).then(res => {
     return res.data
   }).catch((e) => { throw e; });
+}
+
+export const updateCategories = (params) => {
+  return axios.put(
+    categoriesUpdateUrl(params.categoryId),
+    {
+      category: {
+        name: params.name
+      }
+    },
+    { withCredentials: true }
+  ).catch((e) => { throw e; });
 }
 
 export const deleteCategories = (params) => {

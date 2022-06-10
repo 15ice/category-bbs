@@ -2,11 +2,13 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Table, Popconfirm, message } from 'antd';
 
 import InputForm from '../../components/InputForm.jsx';
+import { EditableRow, EditableCell, convertColumns } from '../../components/EditableCell.jsx';
 
 // api
 import {
   fetchCategories,
   addCategories,
+  updateCategories,
   deleteCategories
 } from '../../apis/categories';
 
@@ -44,10 +46,10 @@ const MngCategories = () => {
       name: name
     }).then((res) => {
       getCategories();
+      message.info('カテゴリを追加しました。');
     }).catch((e) => {
       console.error(e);
     });
-    message.info('カテゴリを追加しました。');
   }
 
   const handleDelete = (categoryId) => {
@@ -55,17 +57,40 @@ const MngCategories = () => {
       categoryId: categoryId
     }).then((res) => {
       getCategories();
+      message.info('カテゴリを削除しました。');
     }).catch((e) => {
       console.error(e);
     });
-    message.info('カテゴリを削除しました。');
   }
+
+  const handleUpdate = (row) => {
+    updateCategories({
+      categoryId: row.key,
+      name: row.name
+    }).then((res) => {
+      getCategories();
+      message.info('カテゴリ名を変更しました。');
+    }).catch((e) => {
+      console.error(e);
+      if (e.response.data.name) {
+        message.error(e.response.data.name[0]);
+      }
+    });
+  };
+
+  const components = {
+    body: {
+      row: EditableRow,
+      cell: EditableCell,
+    },
+  };
 
   const columns = [
     {
       title: 'カテゴリ名',
       dataIndex: 'name',
       key: 'name',
+      editable: true,
     },
     {
       title: '投稿数',
@@ -79,7 +104,7 @@ const MngCategories = () => {
     },
     {
       title: '',
-      dataIndex: 'operation',
+      dataIndex: 'delete',
       render: (_, record) => (
         <Popconfirm title="削除しますか?" onConfirm={() => handleDelete(record.key)}>
           <a>Delete</a>
@@ -92,13 +117,14 @@ const MngCategories = () => {
     <Fragment>
       <InputForm name="add_name" handleAdd={handleAdd} />
       <Table
-        columns={columns}
+        components={components}
+        columns={convertColumns(columns, handleUpdate)}
         dataSource={categories}
         pagination={false}
         scroll={{ y: '60vh' }}
       />
     </Fragment>
-  );
+  )
 }
 
 export default MngCategories
