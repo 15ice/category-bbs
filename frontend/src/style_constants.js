@@ -13,8 +13,8 @@ export const COLORS = {
 
 // styled
 export const DefaultMain = styled.main`
+  padding: 15px;
 `
 export const PageTitle = styled.h1`
-  padding-left: 15px;
   font-size: 1.5rem;
 `

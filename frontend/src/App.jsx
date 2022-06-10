@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import styled from 'styled-components';
+import 'antd/dist/antd.css';
 import './App.css';
 import { AiOutlineSetting, AiOutlineLogout } from 'react-icons/ai';
 
@@ -12,7 +13,7 @@ import Mng from './containers/Mng.jsx';
 // api
 import { loggedIn, logout } from './apis/sessions';
 // constants
-import { COLORS } from './style_constants';
+import { COLORS, DefaultMain } from './style_constants';
 import { LOGIN_STATE } from './constants';
 
 const Nabvar = styled.nav`
@@ -116,11 +117,13 @@ const App = () => {
               }
             </NavItems>
           </Nabvar>
-          <Routes>
-            <Route path="/" element={<Posts />} />
-            <Route path="/login" element={<Login loginState={loginState} setLoginState={setLoginState} />} />
-            <Route path="/mng/*" element={<Mng loginState={loginState} />} />
-          </Routes>
+          <DefaultMain>
+            <Routes>
+              <Route path="/" element={<Posts />} />
+              <Route path="/login" element={<Login loginState={loginState} setLoginState={setLoginState} />} />
+              <Route path="/mng/*" element={<Mng loginState={loginState} />} />
+            </Routes>
+          </DefaultMain>
         </BrowserRouter>
       </React.StrictMode>
     </Fragment>
