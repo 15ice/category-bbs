@@ -23,13 +23,13 @@ const Mng = (props) => {
   return (
     <Fragment>
       <DefaultMain>
-        <PageTitle>管理画面</PageTitle>
+        <PageTitle>Settings</PageTitle>
+        <MngMenu />
+        <Routes>
+          <Route index element={<MngPosts loginState={props.loginState} />} />
+          <Route path="categories" element={<MngCategories loginState={props.loginState} />} />
+        </Routes>
       </DefaultMain>
-      <MngMenu />
-      <Routes>
-        <Route index element={<MngPosts loginState={props.loginState} />} />
-        <Route path="categories" element={<MngCategories loginState={props.loginState} />} />
-      </Routes>
     </Fragment>
   );
 }
