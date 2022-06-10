@@ -16,7 +16,7 @@ const Mng = (props) => {
 
   useEffect(() => {
     if (props.loginState !== LOGIN_STATE.LOGIN) {
-      navigate("/", { replace: true });
+      navigate("/login", { replace: true });
     }
   });
 

@@ -5,4 +5,5 @@ export const LOGIN_STATE = {
 
 export const HTTP_STATUS_CODE = {
   UNAUTHORIZED: 401,
+  FORBIDDEN: 403
 }

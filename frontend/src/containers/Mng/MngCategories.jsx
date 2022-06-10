@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Table, Popconfirm, message } from 'antd';
 
 import InputForm from '../../components/InputForm.jsx';
@@ -11,9 +12,12 @@ import {
   updateCategories,
   deleteCategories
 } from '../../apis/categories';
+// constants
+import { HTTP_STATUS_CODE } from '../../constants';
 
 const MngCategories = () => {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   const categoryFormat = (id, name, post_count, active_post_count) => {
     return {
@@ -49,6 +53,9 @@ const MngCategories = () => {
       message.info('カテゴリを追加しました。');
     }).catch((e) => {
       console.error(e);
+      if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        navigate("/login", { replace: true });
+      }
     });
   }
 
@@ -60,6 +67,9 @@ const MngCategories = () => {
       message.info('カテゴリを削除しました。');
     }).catch((e) => {
       console.error(e);
+      if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        navigate("/login", { replace: true });
+      }
     });
   }
 
@@ -72,7 +82,10 @@ const MngCategories = () => {
       message.info('カテゴリ名を変更しました。');
     }).catch((e) => {
       console.error(e);
-      if (e.response.data.name) {
+      if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        navigate("/login", { replace: true });
+      }
+      else if (e.response.data.name) {
         message.error(e.response.data.name[0]);
       }
     });
