@@ -2,13 +2,8 @@ require "test_helper"
 
 class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
   test "test index" do
-    get "/api/v1/posts"
-    assert_response :ok
-  end
-  
-  test "test search" do
     category_id = Category.first.id
-    get "/api/v1/posts/search/#{category_id}"
+    get "/api/v1/posts?category=#{category_id}&skip=10&take=50"
     assert_response :ok
   end
 

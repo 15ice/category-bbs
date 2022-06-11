@@ -1,11 +1,6 @@
 class Api::V1::PostsController < ApplicationController
   def index
-    posts = Post.order(created_at: :desc)
-    render json: posts
-  end
-
-  def search
-    posts = Post.search(params[:category])
+    posts = Post.search(params[:category], params[:skip], params[:take])
     render json: posts
   end
 

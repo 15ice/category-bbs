@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       delete '/logout', to: 'sessions#logout'
       get '/logged_in', to: 'sessions#logged_in?'
       
-      get '/posts/search/:category', to: 'posts#search'
       put '/posts/update_hidden/:id', to: 'posts#update_hidden'
       put '/posts/update_display/:id', to: 'posts#update_display'
       resources :posts, only: %i[index show create]

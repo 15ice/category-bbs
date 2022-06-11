@@ -11,9 +11,9 @@ class Post < ApplicationRecord
   validates :mail, 
       format: { with: VALID_EMAIL_REGEX, message: "メールアドレスを正しく入力してください" }
 
-  def self.search(category)
+  def self.search(category, skip, take)
     if category
-      Post.where('category_id == ?', category)
+      Post.where('category_id == ?', category).limit(take).offset(skip).order(created_at: :desc)
     else
       Post.all
     end
