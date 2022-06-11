@@ -5,9 +5,12 @@ const { Option } = Select;
 
 const SelectItem = (props) => {
   return (
-    <Select style={{ width: 120 }} onChange={props.handleChange}>
-      {props.items.map((item) => <Option key={item.value} value={item.value}>{item.label}</Option>)}
-    </Select>
+    props.items.length > 0 ?
+      <Select defaultValue={props.items[0].value} style={{ width: 120 }} onChange={props.handleChange}>
+        {props.items.map((item) => <Option key={item.value} value={item.value}>{item.label}</Option>)}
+      </Select>
+      :
+      ""
   )
 }
 
