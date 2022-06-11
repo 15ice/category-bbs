@@ -19,6 +19,10 @@ const MngCategories = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   const categoryFormat = (id, name, post_count, active_post_count) => {
     return {
       'key': id,
@@ -27,10 +31,6 @@ const MngCategories = () => {
       'active_post_count': active_post_count
     }
   }
-
-  useEffect(() => {
-    getCategories();
-  }, []);
 
   const getCategories = () => {
     fetchCategories().then((res) => {

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { postsIndexUrl } from './urls'
 
-export const fetchPosts = () => {
+export const fetchPosts = (category, skip, take) => {
   return axios.get(
-    postsIndexUrl,
+    postsIndexUrl(category, skip, take),
     { withCredentials: true }
   ).then(res => {
     return res.data

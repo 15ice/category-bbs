@@ -7,3 +7,5 @@ export const HTTP_STATUS_CODE = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403
 }
+
+export const NUM_OF_TAKE_POSTS = 50;
