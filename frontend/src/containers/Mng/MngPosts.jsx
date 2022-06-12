@@ -117,6 +117,9 @@ const MngPosts = () => {
       message.info('投稿を表示しました。');
     }).catch((e) => {
       console.error(e);
+      if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        navigate("/login", { replace: true });
+      }
     });
   }
 
@@ -128,6 +131,9 @@ const MngPosts = () => {
       message.info('投稿を非表示にしました。');
     }).catch((e) => {
       console.error(e);
+      if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        navigate("/login", { replace: true });
+      }
     });
   }
 

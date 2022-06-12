@@ -14,4 +14,10 @@ class ApplicationController < ActionController::API
     else
     end
   end
+
+  def check_admin
+    if !is_admin?
+      render json: {}, status: :forbidden
+    end
+  end
 end

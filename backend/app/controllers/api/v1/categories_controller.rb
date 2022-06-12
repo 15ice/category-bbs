@@ -50,10 +50,4 @@ class Api::V1::CategoriesController < ApplicationController
   def category_params
     params.require(:category).permit(:name)
   end
-
-  def check_admin
-    if !is_admin?
-      render json: {}, status: :forbidden
-    end
-  end
 end

@@ -1,4 +1,7 @@
 class Api::V1::PostsController < ApplicationController
+
+  before_action :check_admin, only: [:update_display]
+
   def index
     posts = Post.search(params[:category], params[:skip], params[:take])
     render json: posts
@@ -34,6 +37,13 @@ class Api::V1::PostsController < ApplicationController
   def update_hidden
     # 非表示に更新
     post = Post.find(params[:id])
+
+    # 非表示に更新できるのは、管理者か本人のみ
+    if post.user != @user && !is_admin?
+      render json: {}, status: :forbidden
+      return
+    end
+
     post.is_hidden = true
     if post.save
       render json: post, status: :ok

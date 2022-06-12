@@ -27,19 +27,47 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(post_id, response.parsed_body["id"])
   end
 
-  test "test update_hidden" do
-    post_id = Post.first.id
+  test "test update_hidden own posts" do
     category_id = Category.first.id
+    post "/api/v1/posts", 
+      params: {post: {user_name: "test", mail: "hoge@example.com", title: "test", detail: "test", category_id: category_id}}
+    assert_response :created
+    post_id = response.parsed_body["id"]
+
     put "/api/v1/posts/update_hidden/#{post_id}"
     assert_response :ok
     assert_equal(true, response.parsed_body["is_hidden"])
   end
 
-  test "test update_display" do
+  test "test update_hidden admin" do
+    post "/api/v1/login", params: { session: { password: "root" } }
+    assert_response :ok
+
     post_id = Post.first.id
-    category_id = Category.first.id
+    put "/api/v1/posts/update_hidden/#{post_id}"
+    assert_response :ok
+    assert_equal(true, response.parsed_body["is_hidden"])
+  end
+
+  test "test update_hidden forbidden" do
+    post_id = Post.first.id
+    put "/api/v1/posts/update_hidden/#{post_id}"
+    assert_response :forbidden
+  end
+
+  test "test update_display" do
+    post "/api/v1/login", params: { session: { password: "root" } }
+    assert_response :ok
+
+    post_id = Post.first.id
     put "/api/v1/posts/update_display/#{post_id}"
     assert_response :ok
     assert_equal(false, response.parsed_body["is_hidden"])
+  end
+
+  test "test update_display forbidden" do
+    post_id = Post.first.id
+    put "/api/v1/posts/update_display/#{post_id}"
+    assert_response :forbidden
   end
 end
