@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Table, Popconfirm, message, Pagination } from 'antd';
+import { Table, Popconfirm, message, Pagination, Modal } from 'antd';
 import { format } from 'date-fns';
 import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -163,6 +163,22 @@ const MngPosts = () => {
       title: '詳細',
       dataIndex: 'detail',
       key: 'detail',
+      render: (detail) => (
+        detail.length > 50 ?
+          <a onClick={() => Modal.info({
+            title: '',
+            content: (
+              <div>
+                {detail}
+              </div>
+            ),
+            onOk() { },
+          })}>
+            {detail.slice(0, 50) + '...'}
+          </a>
+          :
+          <div>{detail}</div>
+      ),
     },
     {
       title: '表示/非表示',
