@@ -8,4 +8,4 @@ export const HTTP_STATUS_CODE = {
   FORBIDDEN: 403
 }
 
-export const NUM_OF_TAKE_POSTS = 50;
+export const NUM_OF_TAKE_POSTS = 10;

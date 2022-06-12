@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Table, Popconfirm, message } from 'antd';
+import { Table, Popconfirm, message, Pagination } from 'antd';
 import { format } from 'date-fns';
 import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import SelectItem from '../../components/SelectItem.jsx';
 // api
 import {
   fetchPosts,
+  getPostsCount,
   updatePostDisplay,
   updatePostHidden
 } from '../../apis/posts';
@@ -27,10 +28,13 @@ const MngPosts = () => {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     getCategories();
+    getPageTotal(selectCategory);
     getPosts(selectCategory, 0);
   }, []);
 
@@ -61,6 +65,16 @@ const MngPosts = () => {
     });
   }
 
+  const getPageTotal = (category) => {
+    getPostsCount({
+      category: category
+    }).then((res) => {
+      setTotal(res);
+    }).catch((e) => {
+      console.error(e);
+    });
+  }
+
   const getPosts = (category, skip) => {
     fetchPosts({
       category: category,
@@ -84,8 +98,16 @@ const MngPosts = () => {
 
   const handleSelectCategory = (value) => {
     setSelectCategory(value);
+    setPage(1);
+    getPageTotal(value);
     getPosts(value, 0);
   };
+
+  const handlePageChange = (pageNumber) => {
+    console.log(pageNumber);
+    setPage(pageNumber);
+    getPosts(selectCategory, (pageNumber - 1) * NUM_OF_TAKE_POSTS);
+  }
 
   const handlePostDisplay = (id) => {
     updatePostDisplay({
@@ -158,7 +180,14 @@ const MngPosts = () => {
       <Table
         columns={columns}
         dataSource={posts}
+        pagination={false}
         scroll={{ y: '60vh' }}
+      />
+      <Pagination
+        defaultCurrent={page}
+        total={total}
+        pageSize={NUM_OF_TAKE_POSTS}
+        onChange={handlePageChange}
       />
     </Fragment>
   )

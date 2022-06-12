@@ -13,9 +13,17 @@ class Post < ApplicationRecord
 
   def self.search(category, skip, take)
     if category
-      Post.where('category_id == ?', category).limit(take).offset(skip).order(created_at: :desc)
+      Post.where('category_id == ?', category).order(created_at: :desc).limit(take).offset(skip)
     else
-      Post.all
+      Post.all.order(created_at: :desc)
+    end
+  end
+
+  def self.rec_num(category)
+    if category
+      Post.where('category_id == ?', category).count
+    else
+      Post.all.count
     end
   end
 end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       
       put '/posts/update_hidden/:id', to: 'posts#update_hidden'
       put '/posts/update_display/:id', to: 'posts#update_display'
+      get '/posts/count/:category', to: 'posts#count'
       resources :posts, only: %i[index show create]
       resources :categories, only: %i[index show create update destroy]
     end

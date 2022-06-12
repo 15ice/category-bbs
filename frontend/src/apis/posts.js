@@ -1,9 +1,19 @@
 import axios from 'axios';
 import {
   postsIndexUrl,
+  postsCountUrl,
   postsUpdateDisplayUrl,
   postsUpdateHiddenUrl
 } from './urls'
+
+export const getPostsCount = (params) => {
+  return axios.get(
+    postsCountUrl(params.category),
+    { withCredentials: true }
+  ).then(res => {
+    return res.data
+  }).catch((e) => { throw e; });
+}
 
 export const fetchPosts = (params) => {
   return axios.get(

@@ -4,6 +4,11 @@ class Api::V1::PostsController < ApplicationController
     render json: posts
   end
 
+  def count
+    num = Post.rec_num(params[:category])
+    render json: num
+  end
+
   def show
     post = Post.find(params[:id])
     render json: post, status: :ok

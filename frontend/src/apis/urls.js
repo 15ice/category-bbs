@@ -9,7 +9,9 @@ export const loggedInUrl = `${DEFAULT_API}/logged_in`;
 
 // posts
 export const postsIndexUrl = (category_id, skip, take) =>
-  `${DEFAULT_API}/posts?category=${category_id}&$skip=${skip}&take=${take}`;
+  `${DEFAULT_API}/posts?category=${category_id}&skip=${skip}&take=${take}`;
+export const postsCountUrl = (category_id) =>
+  `${DEFAULT_API}/posts/count/${category_id}`;
 export const postsCreateUrl = `${DEFAULT_API}/posts`;
 export const postsShowUrl = (postId) =>
   `${DEFAULT_API}/posts/${postId}`;

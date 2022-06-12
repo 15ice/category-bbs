@@ -7,6 +7,12 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
+  test "test count" do
+    category_id = Category.first.id
+    get "/api/v1/posts/count/#{category_id}"
+    assert_response :ok
+  end
+
   test "test create" do
     category_id = Category.first.id
     post "/api/v1/posts", 
