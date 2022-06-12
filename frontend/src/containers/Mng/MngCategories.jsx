@@ -23,12 +23,12 @@ const MngCategories = () => {
     getCategories();
   }, []);
 
-  const categoryFormat = (id, name, post_count, active_post_count) => {
+  const categoryFormat = (id, name, postCount, activePostCount) => {
     return {
       'key': id,
       'name': name,
-      'post_count': post_count,
-      'active_post_count': active_post_count
+      'postCount': postCount,
+      'activePostCount': activePostCount
     }
   }
 
@@ -107,13 +107,13 @@ const MngCategories = () => {
     },
     {
       title: '投稿数',
-      dataIndex: 'post_count',
-      key: 'post_count',
+      dataIndex: 'postCount',
+      key: 'postCount',
     },
     {
       title: '表示中の投稿数',
-      dataIndex: 'active_post_count',
-      key: 'active_post_count',
+      dataIndex: 'activePostCount',
+      key: 'activePostCount',
     },
     {
       title: '',
