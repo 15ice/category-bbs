@@ -2,15 +2,37 @@ require "test_helper"
 
 class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
   test "test index" do
-    category_id = Category.first.id
-    get "/api/v1/posts?category=#{category_id}&skip=10&take=50"
+    category_id = Category.find_by(name: 'ONE').id
+    get "/api/v1/posts?category=#{category_id}&skip=0&take=10"
     assert_response :ok
+    assert_equal(1, response.parsed_body.size)
+  end
+
+  test "test index admin" do
+    post "/api/v1/login", params: { session: { password: "root" } }
+    assert_response :ok
+
+    category_id = Category.find_by(name: 'ONE').id
+    get "/api/v1/posts?category=#{category_id}&skip=0&take=10"
+    assert_response :ok
+    assert_equal(2, response.parsed_body.size)
   end
 
   test "test count" do
-    category_id = Category.first.id
+    category_id = Category.find_by(name: 'ONE').id
     get "/api/v1/posts/count/#{category_id}"
     assert_response :ok
+    assert_equal(1, response.parsed_body) 
+  end
+
+  test "test count admin" do
+    post "/api/v1/login", params: { session: { password: "root" } }
+    assert_response :ok
+    
+    category_id = Category.find_by(name: 'ONE').id
+    get "/api/v1/posts/count/#{category_id}"
+    assert_response :ok
+    assert_equal(2, response.parsed_body) 
   end
 
   test "test create" do

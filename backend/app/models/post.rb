@@ -13,7 +13,7 @@ class Post < ApplicationRecord
 
   def self.search(category, skip, take)
     if category
-      Post.where('category_id == ?', category).order(created_at: :desc).limit(take).offset(skip)
+      Post.where(category: category).order(created_at: :desc).limit(take).offset(skip)
     else
       Post.all.order(created_at: :desc)
     end
@@ -21,7 +21,15 @@ class Post < ApplicationRecord
 
   def self.rec_num(category)
     if category
-      Post.where('category_id == ?', category).count
+      Post.where(category_id: category).count
+    else
+      Post.all.count
+    end
+  end
+
+  def self.rec_active_num(category)
+    if category
+      Post.where(category: category, is_hidden: false).count
     else
       Post.all.count
     end

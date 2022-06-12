@@ -104,7 +104,6 @@ const MngPosts = () => {
   };
 
   const handlePageChange = (pageNumber) => {
-    console.log(pageNumber);
     setPage(pageNumber);
     getPosts(selectCategory, (pageNumber - 1) * NUM_OF_TAKE_POSTS);
   }

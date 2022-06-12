@@ -4,11 +4,20 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = Post.search(params[:category], params[:skip], params[:take])
+    # 管理者以外は非表示となったデータを参照できない
+    if !is_admin?
+      posts = posts.where(is_hidden: false)
+    end
     render json: posts
   end
 
   def count
-    num = Post.rec_num(params[:category])
+    if is_admin?
+      num = Post.rec_num(params[:category])
+    else
+      # 管理者以外は非表示となったデータを参照できない
+      num = Post.rec_active_num(params[:category])
+    end
     render json: num
   end
 
