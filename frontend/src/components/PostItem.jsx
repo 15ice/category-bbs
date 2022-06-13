@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
 import { AiOutlineMail } from 'react-icons/ai';
-import { format } from 'date-fns';
 
 const PostItems = (props) => {
   const title = props.post.title ?? "(件名なし)";
@@ -9,7 +8,8 @@ const PostItems = (props) => {
   const mail = props.post.mail ? (
     <a href={"mailto:" + props.post.mail}><AiOutlineMail /></a>
   ) : "";
-  const createdAt = <time>{format(new Date(props.post.created_at), "yyyy/MM/dd hh:mm")}</time>;
+  var createdAt = new Date(props.post.created_at);
+  const createdAtStr = <time>{createdAt.toLocaleString()}</time>;
 
   return (
     <Card
@@ -19,7 +19,7 @@ const PostItems = (props) => {
       style={{ width: '70vw', margin: 'auto' }}
     >
       <p>{props.post.detail}</p>
-      <p><small>{createdAt}</small></p>
+      <p><small>{createdAtStr}</small></p>
     </Card>
   )
 }

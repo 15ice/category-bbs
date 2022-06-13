@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Table, Popconfirm, message, Pagination, Modal } from 'antd';
-import { format } from 'date-fns';
 import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import styled from 'styled-components';
 
@@ -141,7 +140,7 @@ const MngPosts = () => {
       title: '投稿日',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (date) => <time>{format(new Date(date), "yyyy/MM/dd hh:mm")}</time>
+      render: (date) => <time>{(new Date(date)).toLocaleString()}</time>
     },
     {
       title: '名前',
