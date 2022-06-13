@@ -1,14 +1,17 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Pagination } from 'antd';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Pagination, message } from 'antd';
+import styled from 'styled-components';
 
 import DrawerMenu from '../components/DrawerMenu.jsx';
 import PostList from '../components/PostList.jsx';
+import PostForm from '../components/PostForm.jsx';
 
 // apis
 import {
   fetchPosts,
-  getPostsCount
+  getPostsCount,
+  addPost
 } from '../apis/posts';
 import {
   fetchCategories,
@@ -17,6 +20,11 @@ import {
 import { LOGIN_STATE, NUM_OF_TAKE_POSTS } from '../constants';
 import { DefaultMain } from '../style_constants';
 
+const CategoryLink = styled.div`
+  margin: auto;
+  width: 40vw;
+`
+
 function useQuery() {
   const { search } = useLocation();
 
@@ -24,11 +32,19 @@ function useQuery() {
 }
 
 const Posts = () => {
+  const DEFULT_POST = {
+    user_name: "",
+    mail: "",
+    title: "",
+    detail: ""
+  }
+
   let query = useQuery();
 
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState(query.get("category") ?? 1);
   const [posts, setPosts] = useState([]);
+  const [postForm, setPostForm] = useState(DEFULT_POST);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -92,6 +108,18 @@ const Posts = () => {
     getPosts(selectCategory, (pageNumber - 1) * NUM_OF_TAKE_POSTS);
   }
 
+  const handleSendForm = (value) => {
+    addPost({
+      ...value.post,
+      category_id: selectCategory
+    }).then((res) => {
+      changeCategory(selectCategory);
+      message.info("投稿しました。");
+    }).catch((e) => {
+      console.error(e);
+    })
+  }
+
   const showTotal = (total) => {
     var startRow = ((page - 1) * NUM_OF_TAKE_POSTS) + 1;
     var endRow = page * NUM_OF_TAKE_POSTS;
@@ -109,7 +137,10 @@ const Posts = () => {
           visible={drawerVisible}
           setVisible={setDrawerVisible}
         />
-        <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
+        <CategoryLink>
+          <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
+        </CategoryLink>
+        <PostForm handleFinish={handleSendForm} />
         <PostList posts={posts} />
         <Pagination
           size="small"
