@@ -10,7 +10,6 @@ const PostItems = (props) => {
   ) : "";
   var createdAt = new Date(props.post.created_at);
   const createdAtStr = <time>{createdAt.toLocaleString()}</time>;
-  console.log(props.post.detail);
   var detail = props.post.detail.split(/(\n)/).map((item, index) => {
     return (
       <Fragment key={index}>

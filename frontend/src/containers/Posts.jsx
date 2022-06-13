@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Pagination, message } from 'antd';
+import { Pagination, message, Space } from 'antd';
 import styled from 'styled-components';
 
 import DrawerMenu from '../components/DrawerMenu.jsx';
@@ -18,11 +18,12 @@ import {
 } from '../apis/categories';
 // constants
 import { LOGIN_STATE, NUM_OF_TAKE_POSTS } from '../constants';
-import { DefaultMain } from '../style_constants';
+import { DefaultMain, PageTitle } from '../style_constants';
 
 const CategoryLink = styled.div`
   margin: auto;
   width: 40vw;
+  text-align: center;
 `
 
 function useQuery() {
@@ -44,7 +45,6 @@ const Posts = () => {
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState(query.get("category") ?? 1);
   const [posts, setPosts] = useState([]);
-  const [postForm, setPostForm] = useState(DEFULT_POST);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -138,7 +138,16 @@ const Posts = () => {
           setVisible={setDrawerVisible}
         />
         <CategoryLink>
-          <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
+          <Space>
+            <PageTitle>
+              {categories.filter(r => r.value == selectCategory).map((item, index) => {
+                return (
+                  <Fragment key={index}>{item.label}</Fragment>
+                )
+              })}
+            </PageTitle>
+            <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
+          </Space>
         </CategoryLink>
         <PostForm handleFinish={handleSendForm} />
         <PostList posts={posts} />
