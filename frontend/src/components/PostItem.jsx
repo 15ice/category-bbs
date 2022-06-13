@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Card } from 'antd';
 import { AiOutlineMail } from 'react-icons/ai';
 
@@ -10,6 +10,14 @@ const PostItems = (props) => {
   ) : "";
   var createdAt = new Date(props.post.created_at);
   const createdAtStr = <time>{createdAt.toLocaleString()}</time>;
+  console.log(props.post.detail);
+  var detail = props.post.detail.split(/(\n)/).map((item, index) => {
+    return (
+      <Fragment key={index}>
+        {item.match(/\n/) ? <br /> : item}
+      </Fragment>
+    )
+  });
 
   return (
     <Card
@@ -18,7 +26,7 @@ const PostItems = (props) => {
       extra={<span>{useName}{mail}</span>}
       style={{ width: '70vw', margin: 'auto' }}
     >
-      <p>{props.post.detail}</p>
+      <p>{detail}</p>
       <p><small>{createdAtStr}</small></p>
     </Card>
   )

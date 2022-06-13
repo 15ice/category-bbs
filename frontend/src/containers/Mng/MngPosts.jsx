@@ -167,7 +167,13 @@ const MngPosts = () => {
             title: '',
             content: (
               <div>
-                {detail}
+                {detail.split(/(\n)/).map((item, index) => {
+                  return (
+                    <Fragment key={index}>
+                      {item.match(/\n/) ? <br /> : item}
+                    </Fragment>
+                  )
+                })}
               </div>
             ),
             onOk() { },
