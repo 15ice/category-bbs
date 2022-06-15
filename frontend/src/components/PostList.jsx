@@ -6,7 +6,7 @@ import PostItem from './PostItem.jsx';
 const PostList = (props) => {
   const posts = props.posts.map(post => {
     return (
-      <PostItem post={post} key={post.id} />
+      <PostItem post={post} handlePostHidden={props.handlePostHidden} key={post.data.id} />
     );
   });
 

@@ -37,10 +37,9 @@ const MngPosts = () => {
     getPosts(selectCategory, 0);
   }, []);
 
-  const postFormat = (id, userId, userName, mail, title, detail, isHidden, createdAt) => {
+  const postFormat = (id, userName, mail, title, detail, isHidden, createdAt) => {
     return {
       'key': id,
-      'userId': userId,
       'userName': userName,
       'mail': mail,
       'title': title,
@@ -81,14 +80,13 @@ const MngPosts = () => {
       take: NUM_OF_TAKE_POSTS
     }).then((res) => {
       var posts = res.map(r => postFormat(
-        r.id,
-        r.user_id,
-        r.user_name,
-        r.mail,
-        r.title,
-        r.detail,
-        r.is_hidden,
-        r.created_at));
+        r.data.id,
+        r.data.user_name,
+        r.data.mail,
+        r.data.title,
+        r.data.detail,
+        r.data.is_hidden,
+        r.data.created_at));
       setPosts(posts);
     }).catch((e) => {
       console.error(e);

@@ -8,7 +8,23 @@ class Api::V1::PostsController < ApplicationController
     if !is_admin?
       posts = posts.where(is_hidden: false)
     end
-    render json: posts
+
+    data = posts.map {
+      | post | {
+        data: {
+          id: post.id,
+          user_name: post.user_name,
+          mail: post.mail,
+          taitle: post.title,
+          detail: post.detail,
+          category_id: post.category_id,
+          is_hidden: post.is_hidden,
+          created_at: post.created_at
+        },
+        own: @user == post.user
+      }
+    }
+    render json: data
   end
 
   def count

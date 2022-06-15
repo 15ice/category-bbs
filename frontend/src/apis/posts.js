@@ -46,6 +46,7 @@ export const addPost = (params) => {
 export const updatePostDisplay = (params) => {
   return axios.put(
     postsUpdateDisplayUrl(params.id),
+    {},
     { withCredentials: true }
   ).then(res => {
     return res.data
@@ -55,6 +56,7 @@ export const updatePostDisplay = (params) => {
 export const updatePostHidden = (params) => {
   return axios.put(
     postsUpdateHiddenUrl(params.id),
+    {},
     { withCredentials: true }
   ).then(res => {
     return res.data

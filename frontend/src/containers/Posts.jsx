@@ -11,7 +11,8 @@ import PostForm from '../components/PostForm.jsx';
 import {
   fetchPosts,
   getPostsCount,
-  addPost
+  addPost,
+  updatePostHidden
 } from '../apis/posts';
 import {
   fetchCategories,
@@ -120,6 +121,17 @@ const Posts = () => {
     })
   }
 
+  const handlePostHidden = (id) => {
+    updatePostHidden({
+      id: id
+    }).then((res) => {
+      getPosts(selectCategory, (page - 1) * NUM_OF_TAKE_POSTS);
+      message.info('投稿を非表示にしました。');
+    }).catch((e) => {
+      console.error(e);
+    });
+  }
+
   const showTotal = (total) => {
     var startRow = ((page - 1) * NUM_OF_TAKE_POSTS) + 1;
     var endRow = page * NUM_OF_TAKE_POSTS;
@@ -150,7 +162,7 @@ const Posts = () => {
           </Space>
         </CategoryLink>
         <PostForm handleFinish={handleSendForm} />
-        <PostList posts={posts} />
+        <PostList posts={posts} handlePostHidden={handlePostHidden} />
         <Pagination
           size="small"
           defaultCurrent={page}
