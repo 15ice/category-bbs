@@ -65,6 +65,7 @@ class Api::V1::PostsController < ApplicationController
 
     # 非表示に更新できるのは、管理者か本人のみ
     if post.user != @user && !is_admin?
+      reset_session
       render json: {}, status: :forbidden
       return
     end

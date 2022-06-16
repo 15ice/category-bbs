@@ -17,6 +17,7 @@ class ApplicationController < ActionController::API
 
   def check_admin
     if !is_admin?
+      reset_session
       render json: {}, status: :forbidden
     end
   end

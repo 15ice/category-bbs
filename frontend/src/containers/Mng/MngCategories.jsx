@@ -13,9 +13,9 @@ import {
   deleteCategories
 } from '../../apis/categories';
 // constants
-import { HTTP_STATUS_CODE } from '../../constants';
+import { HTTP_STATUS_CODE, LOGIN_STATE } from '../../constants';
 
-const MngCategories = () => {
+const MngCategories = (props) => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -54,6 +54,7 @@ const MngCategories = () => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
         navigate("/login", { replace: true });
       }
     });
@@ -68,6 +69,7 @@ const MngCategories = () => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
         navigate("/login", { replace: true });
       }
     });
@@ -83,6 +85,7 @@ const MngCategories = () => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
         navigate("/login", { replace: true });
       }
       else if (e.response.data.name) {

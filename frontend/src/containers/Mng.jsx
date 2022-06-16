@@ -26,8 +26,8 @@ const Mng = (props) => {
         <PageTitle>Settings</PageTitle>
         <MngMenu />
         <Routes>
-          <Route index element={<MngPosts loginState={props.loginState} />} />
-          <Route path="categories" element={<MngCategories loginState={props.loginState} />} />
+          <Route index element={<MngPosts loginState={props.loginState} setLoginState={props.setLoginState} />} />
+          <Route path="categories" element={<MngCategories loginState={props.loginState} setLoginState={props.setLoginState} />} />
         </Routes>
       </DefaultMain>
     </Fragment>

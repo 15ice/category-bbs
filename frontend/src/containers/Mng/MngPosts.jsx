@@ -17,13 +17,13 @@ import {
   fetchCategories,
 } from '../../apis/categories';
 // constants
-import { HTTP_STATUS_CODE, NUM_OF_TAKE_POSTS } from '../../constants';
+import { HTTP_STATUS_CODE, NUM_OF_TAKE_POSTS, LOGIN_STATE } from '../../constants';
 
 const HiddenIcon = styled.span`
   font-size: 1.3rem;
 `
 
-const MngPosts = () => {
+const MngPosts = (props) => {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState(1);
@@ -114,6 +114,7 @@ const MngPosts = () => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
         navigate("/login", { replace: true });
       }
     });
@@ -128,6 +129,7 @@ const MngPosts = () => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
+        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
         navigate("/login", { replace: true });
       }
     });

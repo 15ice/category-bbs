@@ -121,7 +121,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Posts />} />
               <Route path="/login" element={<Login loginState={loginState} setLoginState={setLoginState} />} />
-              <Route path="/mng/*" element={<Mng loginState={loginState} />} />
+              <Route path="/mng/*" element={<Mng loginState={loginState} setLoginState={setLoginState} />} />
             </Routes>
           </DefaultMain>
         </BrowserRouter>
