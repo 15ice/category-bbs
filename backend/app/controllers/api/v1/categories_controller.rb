@@ -1,6 +1,6 @@
 class Api::V1::CategoriesController < ApplicationController
 
-  before_action :check_admin, only: [:create, :update, :destroy]
+  before_action :check_admin, except: [:index, :show]
 
   def index
     categories = Category.order(created_at: :asc)

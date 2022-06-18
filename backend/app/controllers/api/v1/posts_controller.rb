@@ -21,7 +21,7 @@ class Api::V1::PostsController < ApplicationController
           is_hidden: post.is_hidden,
           created_at: post.created_at
         },
-        own: @user == post.user
+        own: @user.id == post.user_id
       }
     }
     render json: data
