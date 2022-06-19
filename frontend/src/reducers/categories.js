@@ -7,7 +7,7 @@ export const initCategoriesState = {
 
 export const categoriesActionTypes = {
   FETCHING: 'FETCHING',
-  FETCH_SUCCESS: 'FETCH_SUCCESS'
+  FETCH_LAVEL: 'FETCH_LAVEL'
 }
 
 export const categoriesReducer = (state, action) => {
@@ -17,7 +17,7 @@ export const categoriesReducer = (state, action) => {
         ...state,
         fetchState: REQUEST_STATE.LOADING,
       };
-    case categoriesActionTypes.FETCH_SUCCESS:
+    case categoriesActionTypes.FETCH_LAVEL:
       return {
         fetchState: REQUEST_STATE.OK,
         categoriesList: action.payload.categories.map(r => {

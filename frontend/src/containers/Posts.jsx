@@ -66,7 +66,7 @@ const Posts = () => {
     categoriesDispatch({ type: categoriesActionTypes.FETCHING });
     fetchCategories().then((res) => {
       categoriesDispatch({
-        type: categoriesActionTypes.FETCH_SUCCESS,
+        type: categoriesActionTypes.FETCH_LAVEL,
         payload: {
           categories: res
         }
@@ -103,7 +103,7 @@ const Posts = () => {
         payload: {
           posts: res
         }
-      })
+      });
     }).catch((e) => {
       console.error(e);
     });
@@ -168,9 +168,7 @@ const Posts = () => {
         }
         <CategoryLink>
           {
-            categoriesState.fetchState === REQUEST_STATE.LOADING ?
-              ""
-              :
+            categoriesState.fetchState === REQUEST_STATE.OK ?
               <Space>
                 <PageTitle>
                   {categoriesState.categoriesList.filter(r => r.value == selectCategory).map((item, index) => {
@@ -181,6 +179,8 @@ const Posts = () => {
                 </PageTitle>
                 <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
               </Space>
+              :
+              ""
           }
         </CategoryLink>
         <PostForm handleFinish={handleSendForm} />

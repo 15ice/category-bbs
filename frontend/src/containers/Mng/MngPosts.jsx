@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useReducer, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Table, Popconfirm, message, Pagination, Modal } from 'antd';
 import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
@@ -16,16 +16,32 @@ import {
 import {
   fetchCategories,
 } from '../../apis/categories';
+// reducers
+import {
+  initPostsState,
+  postsActionTypes,
+  postsReducer,
+} from '../../reducers/posts';
+import {
+  initCategoriesState,
+  categoriesActionTypes,
+  categoriesReducer,
+} from '../../reducers/categories';
 // constants
-import { HTTP_STATUS_CODE, NUM_OF_TAKE_POSTS, LOGIN_STATE } from '../../constants';
+import {
+  REQUEST_STATE,
+  HTTP_STATUS_CODE,
+  NUM_OF_TAKE_POSTS,
+  LOGIN_STATE
+} from '../../constants';
 
 const HiddenIcon = styled.span`
   font-size: 1.3rem;
 `
 
 const MngPosts = (props) => {
-  const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [postsState, postsDispatch] = useReducer(postsReducer, initPostsState);
+  const [categoriesState, categoriesDispatch] = useReducer(categoriesReducer, initCategoriesState);
   const [selectCategory, setSelectCategory] = useState(1);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -37,27 +53,15 @@ const MngPosts = (props) => {
     getPosts(selectCategory, 0);
   }, []);
 
-  const postFormat = (id, userName, mail, title, detail, isHidden, createdAt) => {
-    return {
-      'key': id,
-      'userName': userName,
-      'mail': mail,
-      'title': title,
-      'detail': detail,
-      'isHidden': isHidden,
-      'createdAt': createdAt
-    }
-  }
-
   const getCategories = () => {
+    categoriesDispatch({ type: categoriesActionTypes.FETCHING });
     fetchCategories().then((res) => {
-      var categories = res.map(r => {
-        return {
-          value: r.data.id,
-          label: r.data.name
+      categoriesDispatch({
+        type: categoriesActionTypes.FETCH_LAVEL,
+        payload: {
+          categories: res
         }
       });
-      setCategories(categories);
     }).catch((e) => {
       console.error(e);
     });
@@ -74,20 +78,18 @@ const MngPosts = (props) => {
   }
 
   const getPosts = (category, skip) => {
+    postsDispatch({ type: postsActionTypes.FETCHING });
     fetchPosts({
       category: category,
       skip: skip,
       take: NUM_OF_TAKE_POSTS
     }).then((res) => {
-      var posts = res.map(r => postFormat(
-        r.data.id,
-        r.data.user_name,
-        r.data.mail,
-        r.data.title,
-        r.data.detail,
-        r.data.is_hidden,
-        r.data.created_at));
-      setPosts(posts);
+      postsDispatch({
+        type: postsActionTypes.FETCH_TABLE,
+        payload: {
+          posts: res
+        }
+      });
     }).catch((e) => {
       console.error(e);
     });
@@ -202,10 +204,19 @@ const MngPosts = (props) => {
 
   return (
     <Fragment>
-      <SelectItem items={categories} handleChange={handleSelectCategory} />
+      {
+        categoriesState.fetchState === REQUEST_STATE.OK ?
+          <SelectItem
+            items={categoriesState.categoriesList}
+            handleChange={handleSelectCategory}
+          />
+          :
+          ""
+      }
       <Table
         columns={columns}
-        dataSource={posts}
+        dataSource={postsState.postsList}
+        loading={postsState.fetchState === REQUEST_STATE.LOADING}
         pagination={false}
         scroll={{ y: '60vh' }}
       />
