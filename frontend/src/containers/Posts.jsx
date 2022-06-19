@@ -1,6 +1,7 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useReducer, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Pagination, message, Space } from 'antd';
+import ReactLoading from 'react-loading';
 import styled from 'styled-components';
 
 import DrawerMenu from '../components/DrawerMenu.jsx';
@@ -17,9 +18,15 @@ import {
 import {
   fetchCategories,
 } from '../apis/categories';
+// reducers
+import {
+  initPostsState,
+  postsActionTypes,
+  postsReducer,
+} from '../reducers/posts';
 // constants
-import { LOGIN_STATE, NUM_OF_TAKE_POSTS } from '../constants';
-import { DefaultMain, PageTitle } from '../style_constants';
+import { LOGIN_STATE, REQUEST_STATE, NUM_OF_TAKE_POSTS } from '../constants';
+import { COLORS, DefaultMain, PageTitle } from '../style_constants';
 
 const CategoryLink = styled.div`
   margin: auto;
@@ -45,7 +52,8 @@ const Posts = () => {
 
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState(query.get("category") ?? 1);
-  const [posts, setPosts] = useState([]);
+  //const [posts, setPosts] = useState([]);
+  const [postsState, postsDispatch] = useReducer(postsReducer, initPostsState);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -86,12 +94,18 @@ const Posts = () => {
   }
 
   const getPosts = (category, skip) => {
+    postsDispatch({ type: postsActionTypes.FETCHING });
     fetchPosts({
       category: category,
       skip: skip,
       take: NUM_OF_TAKE_POSTS
     }).then((res) => {
-      setPosts(res);
+      postsDispatch({
+        type: postsActionTypes.FETCH_SUCCESS,
+        payload: {
+          posts: res
+        }
+      })
     }).catch((e) => {
       console.error(e);
     });
@@ -162,16 +176,26 @@ const Posts = () => {
           </Space>
         </CategoryLink>
         <PostForm handleFinish={handleSendForm} />
-        <PostList posts={posts} handlePostHidden={handlePostHidden} />
-        <Pagination
-          size="small"
-          defaultCurrent={page}
-          total={total}
-          pageSize={NUM_OF_TAKE_POSTS}
-          onChange={handlePageChange}
-          showTotal={showTotal}
-          style={{ textAlign: 'center' }}
-        />
+        {
+          postsState.fetchState === REQUEST_STATE.LOADING ?
+            <ReactLoading
+              type="spin"
+              color={COLORS.SECONDARY_TEXT}
+              style={{ margin: 'auto', width: '10vw' }} />
+            :
+            <Fragment>
+              <PostList posts={postsState.postsList} handlePostHidden={handlePostHidden} />
+              <Pagination
+                size="small"
+                defaultCurrent={page}
+                total={total}
+                pageSize={NUM_OF_TAKE_POSTS}
+                onChange={handlePageChange}
+                showTotal={showTotal}
+                style={{ textAlign: 'center' }}
+              />
+            </Fragment>
+        }
       </DefaultMain>
     </Fragment>
   )

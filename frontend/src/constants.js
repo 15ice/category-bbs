@@ -1,3 +1,9 @@
+export const REQUEST_STATE = {
+  INITIAL: 'INITIAL',
+  LOADING: 'LOADING',
+  OK: 'OK',
+}
+
 export const LOGIN_STATE = {
   NOT_LOGIN: 0,
   LOGIN: 1
