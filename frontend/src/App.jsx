@@ -38,6 +38,7 @@ const Logo = styled.div`
   text-decoration-line: none;
 `
 const NavItems = styled.ul`
+  margin: 10px;
   display: flex;
   width: 200px;
   max-width: 40%;
