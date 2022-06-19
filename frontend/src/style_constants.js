@@ -16,6 +16,7 @@ export const DefaultMain = styled.main`
   padding: 15px;
 `
 export const PageTitle = styled.h1`
-  font-size: 1.3rem;
-  color: ${COLORS.PRIMARY_TEXT}
+  font-size: 1.4rem;
+  color: ${COLORS.PRIMARY_TEXT};
+  border-bottom: 3px dotted ${COLORS.DARK_PRIMARY_BACK};
 `
