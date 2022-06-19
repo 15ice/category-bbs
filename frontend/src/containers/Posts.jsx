@@ -24,8 +24,13 @@ import {
   postsActionTypes,
   postsReducer,
 } from '../reducers/posts';
+import {
+  initCategoriesState,
+  categoriesActionTypes,
+  categoriesReducer,
+} from '../reducers/categories';
 // constants
-import { LOGIN_STATE, REQUEST_STATE, NUM_OF_TAKE_POSTS } from '../constants';
+import { REQUEST_STATE, NUM_OF_TAKE_POSTS } from '../constants';
 import { COLORS, DefaultMain, PageTitle } from '../style_constants';
 
 const CategoryLink = styled.div`
@@ -41,19 +46,12 @@ function useQuery() {
 }
 
 const Posts = () => {
-  const DEFULT_POST = {
-    user_name: "",
-    mail: "",
-    title: "",
-    detail: ""
-  }
 
   let query = useQuery();
 
-  const [categories, setCategories] = useState([]);
-  const [selectCategory, setSelectCategory] = useState(query.get("category") ?? 1);
-  //const [posts, setPosts] = useState([]);
+  const [categoriesState, categoriesDispatch] = useReducer(categoriesReducer, initCategoriesState);
   const [postsState, postsDispatch] = useReducer(postsReducer, initPostsState);
+  const [selectCategory, setSelectCategory] = useState(query.get("category") ?? 1);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -65,14 +63,14 @@ const Posts = () => {
   }, [])
 
   const getCategories = () => {
+    categoriesDispatch({ type: categoriesActionTypes.FETCHING });
     fetchCategories().then((res) => {
-      var categories = res.map(r => {
-        return {
-          value: r.data.id,
-          label: r.data.name
+      categoriesDispatch({
+        type: categoriesActionTypes.FETCH_SUCCESS,
+        payload: {
+          categories: res
         }
       });
-      setCategories(categories);
     }).catch((e) => {
       console.error(e);
     });
@@ -156,24 +154,34 @@ const Posts = () => {
   return (
     <Fragment>
       <DefaultMain>
-        <DrawerMenu
-          title="カテゴリ選択"
-          items={categories}
-          setValue={handleClickDrawer}
-          visible={drawerVisible}
-          setVisible={setDrawerVisible}
-        />
+        {
+          categoriesState.fetchState === REQUEST_STATE.LOADING ?
+            ""
+            :
+            <DrawerMenu
+              title="カテゴリ選択"
+              items={categoriesState.categoriesList}
+              setValue={handleClickDrawer}
+              visible={drawerVisible}
+              setVisible={setDrawerVisible}
+            />
+        }
         <CategoryLink>
-          <Space>
-            <PageTitle>
-              {categories.filter(r => r.value == selectCategory).map((item, index) => {
-                return (
-                  <Fragment key={index}>{item.label}</Fragment>
-                )
-              })}
-            </PageTitle>
-            <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
-          </Space>
+          {
+            categoriesState.fetchState === REQUEST_STATE.LOADING ?
+              ""
+              :
+              <Space>
+                <PageTitle>
+                  {categoriesState.categoriesList.filter(r => r.value == selectCategory).map((item, index) => {
+                    return (
+                      <Fragment key={index}>{item.label}</Fragment>
+                    )
+                  })}
+                </PageTitle>
+                <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
+              </Space>
+          }
         </CategoryLink>
         <PostForm handleFinish={handleSendForm} />
         {
