@@ -25,9 +25,20 @@ const PostFormWrap = styled.div`
 `
 
 const PostForm = (props) => {
+  const [form] = Form.useForm();
+
+  const handleFinish = (value) => {
+    props.handleFinish(value);
+    form.resetFields();
+  }
+
   return (
     <PostFormWrap>
-      <Form {...layout} onFinish={props.handleFinish} validateMessages={validateMessages}>
+      <Form {...layout}
+        form={form}
+        onFinish={handleFinish}
+        validateMessages={validateMessages}
+      >
         <Form.Item name={['post', 'user_name']} label="Name">
           <Input />
         </Form.Item>
