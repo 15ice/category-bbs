@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useReducer, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Table, Popconfirm, message } from 'antd';
 
@@ -12,34 +12,32 @@ import {
   updateCategories,
   deleteCategories
 } from '../../apis/categories';
+//reducers
+import {
+  initCategoriesState,
+  categoriesActionTypes,
+  categoriesReducer,
+} from '../../reducers/categories';
 // constants
-import { HTTP_STATUS_CODE, LOGIN_STATE } from '../../constants';
+import { REQUEST_STATE, HTTP_STATUS_CODE, LOGIN_STATE } from '../../constants';
 
 const MngCategories = (props) => {
-  const [categories, setCategories] = useState([]);
+  const [categoriesState, categoriesDispatch] = useReducer(categoriesReducer, initCategoriesState);
   const navigate = useNavigate();
 
   useEffect(() => {
     getCategories();
   }, []);
 
-  const categoryFormat = (id, name, postCount, activePostCount) => {
-    return {
-      'key': id,
-      'name': name,
-      'postCount': postCount,
-      'activePostCount': activePostCount
-    }
-  }
-
   const getCategories = () => {
+    categoriesDispatch({ type: categoriesActionTypes.FETCHING });
     fetchCategories().then((res) => {
-      var categories = res.map(r => categoryFormat(
-        r.data.id,
-        r.data.name,
-        r.post_count,
-        r.active_post_count));
-      setCategories(categories);
+      categoriesDispatch({
+        type: categoriesActionTypes.FETCH_TABLE,
+        payload: {
+          categories: res
+        }
+      });
     }).catch((e) => {
       console.error(e);
     });
@@ -135,7 +133,8 @@ const MngCategories = (props) => {
       <Table
         components={components}
         columns={convertColumns(columns, handleUpdate)}
-        dataSource={categories}
+        dataSource={categoriesState.categoriesList}
+        loading={categoriesState.fetchState === REQUEST_STATE.LOADING}
         pagination={false}
         scroll={{ y: '60vh' }}
       />
