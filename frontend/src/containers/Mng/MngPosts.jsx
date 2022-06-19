@@ -162,6 +162,7 @@ const MngPosts = (props) => {
         detail.length > 50 ?
           <a onClick={() => Modal.info({
             title: '',
+            width: '70vw',
             content: (
               <div>
                 {detail.split(/(\n)/).map((item, index) => {
