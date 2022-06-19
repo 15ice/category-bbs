@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useReducer, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Pagination, message, Space } from 'antd';
+import { Pagination, message } from 'antd';
 import ReactLoading from 'react-loading';
+import { AiOutlineToTop } from 'react-icons/ai';
 import styled from 'styled-components';
 
 import DrawerMenu from '../components/DrawerMenu.jsx';
@@ -43,6 +44,10 @@ const PostHr = styled.hr`
 	border-bottom: 1px dotted #fff;
   margin-top: 20px;
   margin-bottom: 20px;
+`
+const ToTopText = styled.div`
+  margin: auto;
+  text-align: center;
 `
 
 function useQuery() {
@@ -172,7 +177,7 @@ const Posts = () => {
               setVisible={setDrawerVisible}
             />
         }
-        <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
+        <a id="category-title" onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
         <CategoryLink>
           {
             categoriesState.fetchState === REQUEST_STATE.OK ?
@@ -205,11 +210,14 @@ const Posts = () => {
                 pageSize={NUM_OF_TAKE_POSTS}
                 onChange={handlePageChange}
                 showTotal={showTotal}
-                style={{ textAlign: 'center' }}
+                style={{ textAlign: 'center', marginTop: '10px' }}
               />
             </Fragment>
         }
         <PostHr />
+        <ToTopText>
+          <a href="#category-title"><AiOutlineToTop />トップに戻る</a>
+        </ToTopText>
       </DefaultMain>
     </Fragment>
   )
