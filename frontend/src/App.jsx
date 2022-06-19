@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useReducer, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import styled from 'styled-components';
@@ -12,6 +12,12 @@ import Mng from './containers/Mng.jsx';
 
 // api
 import { loggedIn, logout } from './apis/sessions';
+// reducers
+import {
+  initLoginState,
+  sessionsActionTypes,
+  sessionsReducer,
+} from './reducers/sessions';
 // constants
 import { COLORS, DefaultMain } from './style_constants';
 import { LOGIN_STATE } from './constants';
@@ -57,7 +63,7 @@ const EditButton = styled.span`
 `
 
 const App = () => {
-  const [loginState, setLoginState] = useState(LOGIN_STATE.NOT_LOGIN);
+  const [loginState, sessionsDispatch] = useReducer(sessionsReducer, initLoginState);
 
   useEffect(() => {
     checkLoginStatus()
@@ -65,16 +71,15 @@ const App = () => {
 
   const checkLoginStatus = () => {
     loggedIn().then(() => {
-      setLoginState(LOGIN_STATE.LOGIN);
+      sessionsDispatch({ type: sessionsActionTypes.LOGIN });
     }).catch((e) => {
-      setLoginState(LOGIN_STATE.NOT_LOGIN);
+      sessionsDispatch({ type: sessionsActionTypes.LOGOUT });
     });
   }
 
   const handleLogout = () => {
     logout().then(() => {
-      setLoginState(LOGIN_STATE.NOT_LOGIN);
-      console.log(`loginState ${loginState}`);
+      sessionsDispatch({ type: sessionsActionTypes.LOGOUT });
     });
   };
 
@@ -120,8 +125,8 @@ const App = () => {
           <DefaultMain>
             <Routes>
               <Route path="/" element={<Posts />} />
-              <Route path="/login" element={<Login loginState={loginState} setLoginState={setLoginState} />} />
-              <Route path="/mng/*" element={<Mng loginState={loginState} setLoginState={setLoginState} />} />
+              <Route path="/login" element={<Login loginState={loginState} sessionsDispatch={sessionsDispatch} />} />
+              <Route path="/mng/*" element={<Mng loginState={loginState} sessionsDispatch={sessionsDispatch} />} />
             </Routes>
           </DefaultMain>
         </BrowserRouter>

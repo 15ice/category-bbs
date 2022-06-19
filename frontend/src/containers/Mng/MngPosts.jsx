@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useReducer, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { Table, Popconfirm, message, Pagination, Modal } from 'antd';
 import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -31,8 +30,7 @@ import {
 import {
   REQUEST_STATE,
   HTTP_STATUS_CODE,
-  NUM_OF_TAKE_POSTS,
-  LOGIN_STATE
+  NUM_OF_TAKE_POSTS
 } from '../../constants';
 
 const HiddenIcon = styled.span`
@@ -45,7 +43,6 @@ const MngPosts = (props) => {
   const [selectCategory, setSelectCategory] = useState(1);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getCategories();
@@ -116,8 +113,7 @@ const MngPosts = (props) => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
-        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
-        navigate("/login", { replace: true });
+        props.handleLogout();
       }
     });
   }
@@ -131,8 +127,7 @@ const MngPosts = (props) => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
-        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
-        navigate("/login", { replace: true });
+        props.handleLogout();
       }
     });
   }

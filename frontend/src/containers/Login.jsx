@@ -4,6 +4,10 @@ import styled from 'styled-components';
 
 // api
 import { login } from '../apis/sessions';
+// reducers
+import {
+  sessionsActionTypes,
+} from '../reducers/sessions';
 // constants
 import { HTTP_STATUS_CODE, LOGIN_STATE } from '../constants';
 
@@ -26,7 +30,7 @@ const Login = (props) => {
     login({
       password: password
     }).then(() => {
-      props.setLoginState(LOGIN_STATE.LOGIN);
+      props.sessionsDispatch({ type: sessionsActionTypes.LOGIN });
       navigate("/mng");
     }).catch((e) => {
       props.setLoginState(LOGIN_STATE.NOT_LOGIN);

@@ -1,5 +1,4 @@
 import React, { Fragment, useReducer, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { Table, Popconfirm, message } from 'antd';
 
 import InputForm from '../../components/InputForm.jsx';
@@ -12,18 +11,17 @@ import {
   updateCategories,
   deleteCategories
 } from '../../apis/categories';
-//reducers
+// reducers
 import {
   initCategoriesState,
   categoriesActionTypes,
   categoriesReducer,
 } from '../../reducers/categories';
 // constants
-import { REQUEST_STATE, HTTP_STATUS_CODE, LOGIN_STATE } from '../../constants';
+import { REQUEST_STATE, HTTP_STATUS_CODE } from '../../constants';
 
 const MngCategories = (props) => {
   const [categoriesState, categoriesDispatch] = useReducer(categoriesReducer, initCategoriesState);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getCategories();
@@ -52,8 +50,7 @@ const MngCategories = (props) => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
-        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
-        navigate("/login", { replace: true });
+        props.handleLogout();
       }
     });
   }
@@ -67,8 +64,7 @@ const MngCategories = (props) => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
-        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
-        navigate("/login", { replace: true });
+        props.handleLogout();
       }
     });
   }
@@ -83,8 +79,7 @@ const MngCategories = (props) => {
     }).catch((e) => {
       console.error(e);
       if (e.response.status === HTTP_STATUS_CODE.FORBIDDEN) {
-        props.setLoginState(LOGIN_STATE.NOT_LOGIN);
-        navigate("/login", { replace: true });
+        props.handleLogout();
       }
       else if (e.response.data.name) {
         message.error(e.response.data.name[0]);
