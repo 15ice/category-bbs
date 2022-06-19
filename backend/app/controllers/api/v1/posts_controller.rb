@@ -15,7 +15,7 @@ class Api::V1::PostsController < ApplicationController
           id: post.id,
           user_name: post.user_name,
           mail: post.mail,
-          taitle: post.title,
+          title: post.title,
           detail: post.detail,
           category_id: post.category_id,
           is_hidden: post.is_hidden,

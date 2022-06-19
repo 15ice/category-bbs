@@ -38,6 +38,12 @@ const CategoryLink = styled.div`
   width: 40vw;
   text-align: center;
 `
+const PostHr = styled.hr`
+  border-top: 1px dotted ${COLORS.DIVIDER};
+	border-bottom: 1px dotted #fff;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`
 
 function useQuery() {
   const { search } = useLocation();
@@ -166,24 +172,23 @@ const Posts = () => {
               setVisible={setDrawerVisible}
             />
         }
+        <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
         <CategoryLink>
           {
             categoriesState.fetchState === REQUEST_STATE.OK ?
-              <Space>
-                <PageTitle>
-                  {categoriesState.categoriesList.filter(r => r.value == selectCategory).map((item, index) => {
-                    return (
-                      <Fragment key={index}>{item.label}</Fragment>
-                    )
-                  })}
-                </PageTitle>
-                <a onClick={() => setDrawerVisible(true)}>カテゴリ選択</a>
-              </Space>
+              <PageTitle>
+                {categoriesState.categoriesList.filter(r => r.value == selectCategory).map((item, index) => {
+                  return (
+                    <Fragment key={index}>{item.label}</Fragment>
+                  )
+                })}
+              </PageTitle>
               :
               ""
           }
         </CategoryLink>
         <PostForm handleFinish={handleSendForm} />
+        <PostHr />
         {
           postsState.fetchState === REQUEST_STATE.LOADING ?
             <ReactLoading
@@ -204,6 +209,7 @@ const Posts = () => {
               />
             </Fragment>
         }
+        <PostHr />
       </DefaultMain>
     </Fragment>
   )
