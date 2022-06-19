@@ -21,14 +21,3 @@ p "create test data for category."
 INIT_CATEGORIES.each do |category|
   Category.create(category)
 end
-
-p "create test data for post."
-(1..100).each do |n| 
-  Post.create(
-    user: User.offset( rand(User.count) ).first,
-    user_name: "#{n} tester",
-    mail: "#{n}test@test.com",
-    title: "#{n} test title",
-    detail: "#{n} test detail",
-    category: Category.offset( rand(Category.count) ).first)
-end
